@@ -41,14 +41,20 @@
 
         // Establecer la figura de la barra en este caso un rectangulo
         this.kind = "rectangle";        
+        // Velocidad de las barras
+        this.speed = 10;
     }
 
     self.Bar.prototype = {
         down: function() {
-
+            this.y += this.speed;
         },
         up: function() {
-
+            this.y -= this.speed;
+        },
+        // Se utiliza para cuando imprimamos el objeto como string devuelva lo definido en la funcion toString
+        toString: function() {
+            return "x: " + this.x + "y: " + this.y;
         }
     }
 })();
@@ -94,14 +100,26 @@
     }
 })();
 
+var board = new Board(800, 400);
+var bar = new Bar(20, 100, 40, 100, board);
+var bar = new Bar(735, 100, 40, 100, board);
+var canvas = document.getElementById("canvas");
+var board_view = new BoardView(canvas, board);
+
+document.addEventListener("keydown", function(ev) {
+    console.log(ev.keyCode);
+    if( ev.keyCode == 38 ) {
+        bar.up();
+    } else if( ev.keyCode == 40 ) {
+        bar.down();
+    }
+
+    console.log(bar.toString());
+});
+
 window.addEventListener("load", main);
 
 function main() {
-    var board = new Board(800, 400);
-    var bar = new Bar(20, 100, 40, 100, board);
-    var bar = new Bar(735, 100, 40, 100, board);
-    var canvas = document.getElementById("canvas");
-    var board_view = new BoardView(canvas, board);
 
     board_view.draw();
 }
